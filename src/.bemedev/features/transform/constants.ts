@@ -1,9 +1,9 @@
 /**
  * PRIMITIVES variable - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -20,10 +20,10 @@ export const PRIMITIVES = [
 
 /**
  * PRIMITIVE_OBJECTS variable - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -31,10 +31,10 @@ export const PRIMITIVES = [
 export const PRIMITIVE_OBJECTS = ['date', 'primitive'] as const;
 /**
  * MAYBE variable - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -42,10 +42,10 @@ export const PRIMITIVE_OBJECTS = ['date', 'primitive'] as const;
 export const MAYBE = '$$app-ts => maybe$$' as const;
 /**
  * CUSTOM variable - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -53,10 +53,10 @@ export const MAYBE = '$$app-ts => maybe$$' as const;
 export const CUSTOM = '$$app-ts => custom$$' as const;
 /**
  * PARTIAL variable - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -64,10 +64,10 @@ export const CUSTOM = '$$app-ts => custom$$' as const;
 export const PARTIAL = '$$app-ts => partial$$' as const;
 /**
  * ARRAY variable - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)

@@ -1,12 +1,19 @@
 import type { AnyArray, Keys, NOmit, Ru, SoRa } from '../../globals/types';
-import type { ARRAY, CUSTOM, MAYBE, PARTIAL, PRIMITIVES, PRIMITIVE_OBJECTS } from './constants';
+import type {
+  ARRAY,
+  CUSTOM,
+  MAYBE,
+  PARTIAL,
+  PRIMITIVES,
+  PRIMITIVE_OBJECTS,
+} from './constants';
 
 /**
  * PrimitiveS type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -28,10 +35,10 @@ type TransformPrimitiveS<T extends PrimitiveS> = T extends 'string'
 
 /**
  * Types type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -40,10 +47,10 @@ export type Types = PrimitiveS | (typeof PRIMITIVE_OBJECTS)[number];
 
 /**
  * TransformTypes type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -57,10 +64,10 @@ export type TransformTypes<T extends Types> = T extends PrimitiveS
 
 /**
  * Custom type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -71,10 +78,10 @@ export type Custom<T = any> = {
 
 /**
  * PartialCustom type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -85,10 +92,10 @@ export type PartialCustom = {
 
 /**
  * __ObjectS type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -97,10 +104,10 @@ export type __ObjectS = Types | ObjectMapS | Custom | PartialCustom;
 
 /**
  * Maybe type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -113,10 +120,10 @@ export type Maybe<
 
 /**
  * ArrayCustom type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -127,10 +134,10 @@ export type ArrayCustom<T extends __ObjectS | Maybe = __ObjectS> = {
 
 /**
  * ObjectMapS type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -148,10 +155,10 @@ type _ObjectS = __ObjectS | Maybe | ArrayCustom;
  */
 /**
  * ObjectS type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -159,10 +166,10 @@ type _ObjectS = __ObjectS | Maybe | ArrayCustom;
 export type ObjectS = _ObjectS | SoRa<_ObjectS>;
 /**
  * POS type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -228,10 +235,10 @@ type Undefiny<T> = T extends AnyArray
     : T;
 /**
  * TransformS type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
@@ -240,14 +247,12 @@ export type TransformS<T> = Undefiny<__TransformPrimitiveObject<T>>;
 
 /**
  * inferT type - Auto-generated expression
- * 
+ *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
- * 
+ *
  * @generated
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
 export type inferT<T extends ObjectS> = TransformS<T>;
-
-    
