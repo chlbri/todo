@@ -65,7 +65,7 @@ export const deck = v.pipe(
     name: v.pipe(v.string(), v.description('The name of the deck')),
     id: v.pipe(ID, v.description('The id of the deck')),
     todos: v.pipe(
-      v.array(todo2),
+      v.array(todo),
       v.description('The todos linked to this deck'),
     ),
   }),
@@ -73,3 +73,17 @@ export const deck = v.pipe(
 );
 
 export type Deck = v.InferInput<typeof deck>;
+
+export const deck2 = v.pipe(
+  v.object({
+    name: v.pipe(v.string(), v.description('The name of the deck')),
+    id: v.pipe(ID, v.description('The id of the deck')),
+    todos: v.pipe(
+      v.array(todo2),
+      v.description('The todos linked to this deck'),
+    ),
+  }),
+  v.description('The deck item'),
+);
+
+export type Deck2 = v.InferInput<typeof deck2>;

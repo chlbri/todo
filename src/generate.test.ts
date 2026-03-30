@@ -22,7 +22,6 @@ const C = makeTodo({
 const D = makeTodo({
   id: 'dddddddd-0000-0000-0000-000000000004',
   label: 'D',
-  // two parents → duplicated under both A and B
   parents: [A.id, B.id],
 });
 const E = makeTodo({
@@ -31,186 +30,156 @@ const E = makeTodo({
   parents: [B.id],
 });
 
-describe('generateDeck – empty list', () => {
-  test('returns a deck with an empty todos array', () => {
+describe('generateDeck', () => {
+  describe('#01 => empty list', () => {
     const deck = generateDeck('empty');
-    expect(deck.todos).toHaveLength(0);
-    expect(deck.name).toBe('empty');
+    test('#01 => todos is empty', () =>
+      expect(deck.todos).toHaveLength(0));
+    test('#02 => name is "empty"', () => expect(deck.name).toBe('empty'));
+
+    test('#03 => id is a valid UUID', () => {
+      const uuidRegex = /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/iu;
+      expect(deck.id).toMatch(uuidRegex);
+    });
   });
 
-  test('assigns a valid UUID as the deck id', () => {
-    const deck = generateDeck('empty');
-    const uuidRegex = /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/iu;
-    expect(deck.id).toMatch(uuidRegex);
-  });
-});
-
-describe('generateDeck – single root', () => {
-  test('produces one root Todo2 node', () => {
-    const deck = generateDeck('single', A);
-    expect(deck.todos).toHaveLength(1);
-  });
-
-  test('root node has correct fields', () => {
+  describe('#02 => single root', () => {
     const deck = generateDeck('single', A);
     const root = deck.todos[0];
-    expect(root.id).toBe(A.id);
-    expect(root.label).toBe(A.label);
-    expect(root.children).toHaveLength(0);
-  });
-});
 
-describe('generateDeck – multiple flat roots', () => {
-  const X = makeTodo({
-    id: 'fa000000-0000-0000-0000-000000000010',
-    label: 'X',
-  });
-  const Y = makeTodo({
-    id: 'fb000000-0000-0000-0000-000000000011',
-    label: 'Y',
-  });
-  const Z = makeTodo({
-    id: 'fc000000-0000-0000-0000-000000000012',
-    label: 'Z',
+    test('#01 => one root', () => expect(deck.todos).toHaveLength(1));
+    test('#02 => root id is A.id', () => expect(root.id).toBe(A.id));
+    test('#03 => root label', () => expect(root.label).toBe(A.label));
+    test('#04 => no children', () =>
+      expect(root.children).toHaveLength(0));
   });
 
-  test('every parentless todo becomes a root', () => {
+  describe('#03 => multiple flat roots', () => {
+    const X = makeTodo({
+      id: 'fa000000-0000-0000-0000-000000000010',
+      label: 'X',
+    });
+
+    const Y = makeTodo({
+      id: 'fb000000-0000-0000-0000-000000000011',
+      label: 'Y',
+    });
+
+    const Z = makeTodo({
+      id: 'fc000000-0000-0000-0000-000000000012',
+      label: 'Z',
+    });
+
     const deck = generateDeck('flat', X, Y, Z);
-    expect(deck.todos).toHaveLength(3);
+    const [nodeX, nodeY, nodeZ] = deck.todos;
+
+    test('#01 => three roots', () => expect(deck.todos).toHaveLength(3));
+    test('#02 => X is leaf', () => expect(nodeX.children).toHaveLength(0));
+    test('#03 => Y is leaf', () => expect(nodeY.children).toHaveLength(0));
+    test('#04 => Z is leaf', () => expect(nodeZ.children).toHaveLength(0));
   });
 
-  test('roots have no children', () => {
-    const deck = generateDeck('flat', X, Y, Z);
-    for (const root of deck.todos) {
-      expect(root.children).toHaveLength(0);
-    }
-  });
-});
-
-describe('generateDeck – one parent, one child', () => {
-  test('child is nested under its parent', () => {
+  describe('#04 => one parent, one child', () => {
     const deck = generateDeck('p-c', A, B);
-    expect(deck.todos).toHaveLength(1); // only A is root
-    expect(deck.todos[0].id).toBe(A.id);
-    expect(deck.todos[0].children).toHaveLength(1);
-    expect(deck.todos[0].children[0].id).toBe(B.id);
+    const root = deck.todos[0];
+    const child = root.children[0];
+
+    test('#01 => one root', () => expect(deck.todos).toHaveLength(1));
+    test('#02 => root is A', () => expect(root.id).toBe(A.id));
+    test('#03 => one child', () => expect(root.children).toHaveLength(1));
+    test('#04 => child is B', () => expect(child.id).toBe(B.id));
+    test('#05 => leaf node', () => expect(child.children).toHaveLength(0));
   });
 
-  test('child node has no children of its own', () => {
-    const deck = generateDeck('p-c', A, B);
-    expect(deck.todos[0].children[0].children).toHaveLength(0);
-  });
-});
-
-describe('generateDeck – one parent, multiple children', () => {
-  test('both children appear under the parent', () => {
+  describe('#05 => one parent, multiple children', () => {
     const deck = generateDeck('siblings', A, B, C);
     const root = deck.todos[0];
-    expect(root.children).toHaveLength(2);
     const childIds = root.children.map(c => c.id);
-    expect(childIds).toContain(B.id);
-    expect(childIds).toContain(C.id);
-  });
-});
 
-describe('generateDeck – multiple parents → duplication', () => {
-  // D has parents [A, B]. Tree should be:
-  //  A
-  //  ├─ B
-  //  │  └─ D  (copy 1)
-  //  └─ D     (copy 2)
-
-  test('D is duplicated under each of its parents', () => {
-    const deck = generateDeck('dup', A, B, D);
-    const root = deck.todos[0]; // A
-    expect(root.id).toBe(A.id);
-
-    const rootChildIds = root.children.map(c => c.id);
-    // D is a direct child of A
-    expect(rootChildIds).toContain(D.id);
-    // B is also a direct child of A
-    expect(rootChildIds).toContain(B.id);
-
-    // D is also a child of B
-    const nodeB = root.children.find(c => c.id === B.id)!;
-    expect(nodeB.children.map(c => c.id)).toContain(D.id);
+    test('#01 => two children', () =>
+      expect(root.children).toHaveLength(2));
+    test('#02 => B is a child', () => expect(childIds).toContain(B.id));
+    test('#03 => C is a child', () => expect(childIds).toContain(C.id));
   });
 
-  test('duplicated nodes are independent objects', () => {
+  describe('#06 => multiple parents → duplication', () => {
     const deck = generateDeck('dup', A, B, D);
     const root = deck.todos[0];
-
-    const dUnderA = root.children.find(c => c.id === D.id)!;
+    const rootChildIds = root.children.map(c => c.id);
     const nodeB = root.children.find(c => c.id === B.id)!;
+    const dUnderA = root.children.find(c => c.id === D.id)!;
     const dUnderB = nodeB.children.find(c => c.id === D.id)!;
-
-    expect(dUnderA).not.toBe(dUnderB); // different object references
+    test('#01 => root is A', () => expect(root.id).toBe(A.id));
+    test('#02 => D under A', () => expect(rootChildIds).toContain(D.id));
+    test('#03 => B under A', () => expect(rootChildIds).toContain(B.id));
+    test('#04 => D under B', () => expect(dUnderB).toBeDefined());
+    test('#05 => distinct copies', () =>
+      expect(dUnderA).not.toBe(dUnderB));
   });
-});
 
-describe('generateDeck – deep nesting', () => {
-  test('grandchild is nested two levels deep', () => {
+  describe('#07 => deep nesting', () => {
     const deck = generateDeck('deep', A, B, E);
-    const root = deck.todos[0]; // A
-    const nodeB = root.children[0]; // B
-    expect(nodeB.children).toHaveLength(1);
-    expect(nodeB.children[0].id).toBe(E.id);
-    expect(nodeB.children[0].children).toHaveLength(0);
-  });
-});
+    const root = deck.todos[0];
+    const nodeB = root.children[0];
+    const nodeE = nodeB.children[0];
 
-describe('generateDeck – mixed roots and children', () => {
-  const R1 = makeTodo({
-    id: 'f1000000-0000-0000-0000-000000000020',
-    label: 'R1',
-  });
-  const R2 = makeTodo({
-    id: 'f2000000-0000-0000-0000-000000000021',
-    label: 'R2',
-  });
-  const CH = makeTodo({
-    id: 'ca000000-0000-0000-0000-000000000022',
-    label: 'CH',
-    parents: [R1.id],
+    test('#01 => one child', () => expect(nodeB.children).toHaveLength(1));
+    test('#02 => child is E', () => expect(nodeE.id).toBe(E.id));
+    test('#03 => E is a leaf', () =>
+      expect(nodeE.children).toHaveLength(0));
   });
 
-  test('only truly parentless todos are roots', () => {
+  describe('#08 => mixed roots and children', () => {
+    const R1 = makeTodo({
+      id: 'f1000000-0000-0000-0000-000000000020',
+      label: 'R1',
+    });
+
+    const R2 = makeTodo({
+      id: 'f2000000-0000-0000-0000-000000000021',
+      label: 'R2',
+    });
+
+    const CH = makeTodo({
+      id: 'ca000000-0000-0000-0000-000000000022',
+      label: 'CH',
+      parents: [R1.id],
+    });
+
     const deck = generateDeck('mixed', R1, R2, CH);
-    expect(deck.todos).toHaveLength(2);
     const rootIds = deck.todos.map(t => t.id);
-    expect(rootIds).toContain(R1.id);
-    expect(rootIds).toContain(R2.id);
-    expect(rootIds).not.toContain(CH.id);
-  });
-
-  test('child appears under the correct root only', () => {
-    const deck = generateDeck('mixed', R1, R2, CH);
     const nodeR1 = deck.todos.find(t => t.id === R1.id)!;
     const nodeR2 = deck.todos.find(t => t.id === R2.id)!;
-    expect(nodeR1.children).toHaveLength(1);
-    expect(nodeR1.children[0].id).toBe(CH.id);
-    expect(nodeR2.children).toHaveLength(0);
-  });
-});
+    const nodeR1Child = nodeR1.children[0];
 
-describe('generateDeck – orphaned parent reference', () => {
-  const orphan = makeTodo({
-    id: 'a0000000-0000-0000-0000-000000000030',
-    label: 'Orphan',
-    parents: ['deadbeef-0000-0000-0000-000000000000'],
+    test('#01 => two roots', () => expect(deck.todos).toHaveLength(2));
+    test('#02 => R1 is a root', () => expect(rootIds).toContain(R1.id));
+    test('#03 => R2 is a root', () => expect(rootIds).toContain(R2.id));
+    test('#04 => CH not a root', () =>
+      expect(rootIds).not.toContain(CH.id));
+    test('#05 => R1 kids', () => expect(nodeR1.children).toHaveLength(1));
+    test('#06 => R1 child is CH', () =>
+      expect(nodeR1Child.id).toBe(CH.id));
+    test('#07 => R2 leaf', () => expect(nodeR2.children).toHaveLength(0));
   });
 
-  test('todo whose parent is absent becomes a root', () => {
+  describe('#09 => orphaned parent reference', () => {
+    const orphan = makeTodo({
+      id: 'a0000000-0000-0000-0000-000000000030',
+      label: 'Orphan',
+      parents: ['deadbeef-0000-0000-0000-000000000000'],
+    });
+
     const deck = generateDeck('orphan', orphan);
-    expect(deck.todos).toHaveLength(1);
-    expect(deck.todos[0].id).toBe(orphan.id);
-  });
-});
+    const root = deck.todos[0];
 
-describe('generateDeck – unique deck ids', () => {
-  test('two calls return different ids', () => {
+    test('#01 => one root', () => expect(deck.todos).toHaveLength(1));
+    test('#02 => root is orphan', () => expect(root.id).toBe(orphan.id));
+  });
+
+  describe('#10 => unique deck ids', () => {
     const d1 = generateDeck('d1', A);
     const d2 = generateDeck('d2', A);
-    expect(d1.id).not.toBe(d2.id);
+    test('#01 => ids are unique', () => expect(d1.id).not.toBe(d2.id));
   });
 });

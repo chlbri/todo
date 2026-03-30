@@ -3,9 +3,24 @@
 <br/>
 <br/>
 
-### Version [0.0.1] --> _date & hour_
+<details>
+<summary>
 
-- ✨ Première version de la bibliothèque
+## **[0.0.1] - 29/03/2026** => _19:55_
+
+</summary>
+
+- Add `generateDeck` function — builds a tree-structured `Deck` from a flat
+  list of `Todo` items
+- Add Valibot schemas for `Todo`, `Todo2`, and `Deck` types
+- Add `create` utility for schema-validated object factories
+- Add auto-generated TypeScript type definitions for arrays, objects,
+  strings, numbers, functions, promises, and transforms
+- <u>Test coverage **_100%_** on `generate.ts` and `schemas.ts`</u>
+
+</details>
+
+<br/>
 
 <br/>
 

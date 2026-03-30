@@ -1,4 +1,4 @@
-import type { Deck, Todo, Todo2 } from './schemas';
+import type { Deck2, Todo, Todo2 } from './schemas';
 
 /**
  * Recursively build a `Todo2` tree node for `todo`, attaching every todo
@@ -26,7 +26,7 @@ const buildNode = (todo: Todo, all: Todo[]): Todo2 => {
  * @param name  The name of the deck.
  * @param todos The flat list of todos to organise.
  */
-export const generateDeck = (name: string, ...todos: Todo[]): Deck => {
+export const generateDeck = (name: string, ...todos: Todo[]): Deck2 => {
   const ids = new Set(todos.map(t => t.id));
 
   // Roots: todos with no parents, or whose parents are all outside the list
