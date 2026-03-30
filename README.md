@@ -1,6 +1,40 @@
-# Beatifull lib
+# @bemedev/todo
 
-A beautifull description
+A TypeScript library for managing todo items as hierarchical trees, powered
+by a state machine built with `@bemedev/app-ts`.
+
+## Features
+
+- **`Todo` / `Todo2` schemas** — Valibot-validated todo items with optional
+  `parents` references for building trees
+- **`generateDeck`** — converts a flat list of `Todo` items into a
+  `Todo2[]` tree (roots at top level, children nested recursively; a todo
+  with multiple parents is duplicated under each)
+- **State machine** — full lifecycle management (auth, save, sync) via
+  `@bemedev/app-ts`
+- **`create` factory** — schema-validated object factory helper
+
+## Installation
+
+```bash
+pnpm add @bemedev/todo
+```
+
+## Usage
+
+```ts
+import { generateDeck, type Todo } from '@bemedev/todo';
+
+const todos: Todo[] = [
+  { id: 'aaa', label: 'Root task' },
+  { id: 'bbb', label: 'Child task', parents: ['aaa'] },
+  { id: 'ccc', label: 'Grandchild', parents: ['bbb'] },
+];
+
+const tree = generateDeck(...todos);
+// tree[0].label       => 'Root task'
+// tree[0].children[0] => { label: 'Child task', children: [...] }
+```
 
 <br/>
 
@@ -8,9 +42,9 @@ A beautifull description
 
 MIT
 
-## CHANGE_LOG
+## CHANGELOG
 
-Read [CHANGE_LOG.md](CHANGE_LOG.md) for more details about the changes.
+Read [CHANGELOG.md](CHANGELOG.md) for more details about the changes.
 
 <br/>
 

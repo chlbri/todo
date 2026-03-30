@@ -1,13 +1,16 @@
 import { createMachine, typings } from '@bemedev/app-ts';
+import { NO_INTERNET_ERROR } from './machine.errors';
 import { SCHEMAS } from './machine.machine.gen';
 import { Deck } from './schemas';
-import { NO_INTERNET_ERROR } from './machine.errors';
 
 /**
  * TODO:
  */
 const userInfos = typings.any({});
 
+/**
+ *
+ */
 export const machine = createMachine(
   {
     __tsSchema: SCHEMAS.machine.__tsSchema,
@@ -452,7 +455,7 @@ export const machine = createMachine(
         try {
           const response = await fetch('https://dns.google/');
           if (!response.ok) throw NO_INTERNET_ERROR;
-        } catch (error) {
+        } catch {
           throw NO_INTERNET_ERROR;
         }
       },

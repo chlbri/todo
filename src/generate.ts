@@ -1,4 +1,4 @@
-import type { Deck2, Todo, Todo2 } from './schemas';
+import type { Todo, Todo2 } from './schemas';
 
 /**
  * Recursively build a `Todo2` tree node for `todo`, attaching every todo
@@ -14,29 +14,15 @@ const buildNode = (todo: Todo, all: Todo[]): Todo2 => {
 };
 
 /**
- * Generate a `Deck` from a flat list of `Todo` items.
+ * Build a `Todo2` tree from a flat list of `Todo` items.
  *
- * The todos are organised into a tree:
- * - Root todos (no parents, or parents not present in the list) sit at the
- *   top level of `deck.todos`.
- * - Each todo is attached as a child under every parent it references,
- *   meaning a todo with multiple parents will be **duplicated** once per
- *   parent.
- *
- * @param name  The name of the deck.
- * @param todos The flat list of todos to organise.
+ * Root todos (those with no parents) sit at the top level.
+ * A todo with multiple parents is duplicated under each parent.
  */
-export const generateDeck = (name: string, ...todos: Todo[]): Deck2 => {
-  const ids = new Set(todos.map(t => t.id));
+export const generateDeck = (...todos: Todo[]): Todo2[] => {
+  const roots = todos
+    .filter(t => !t.parents?.length)
+    .map(root => buildNode(root, todos));
 
-  // Roots: todos with no parents, or whose parents are all outside the list
-  const roots = todos.filter(
-    t => !t.parents?.length || !t.parents.some(pid => ids.has(pid)),
-  );
-
-  return {
-    name,
-    id: crypto.randomUUID(),
-    todos: roots.map(root => buildNode(root, todos)),
-  };
+  return roots;
 };

@@ -6,6 +6,33 @@
 <details>
 <summary>
 
+## **[0.1.0] - 30/03/2026** => _01:19_
+
+</summary>
+
+- **BREAKING** — `generateDeck` ne prend plus les paramètres `name` et `id`
+  ; retourne directement `Todo2[]` au lieu d'un objet `Deck`
+- Add state machine implementation (`machine.machine.ts`)
+- Add auto-generated machine type definitions (`machine.machine.gen.ts`)
+- Add machine error definitions (`machine.errors.ts`)
+- Add `app:gen` and `app:gen:watch` scripts
+- Fix rolldown build — add `require.js` CJS polyfill for `clone-deep`
+  compatibility
+- Refactor `generate.test.ts` — tests alignés sur la nouvelle signature de
+  `generateDeck` (suppression des blocs `orphan` et `unique deck ids`)
+- Remove `index.test.ts`
+- Update `rxjs` and `valibot` moved to `peerDependencies`
+- Add `@bemedev/app-ts`, `@bemedev/app-cli`, `@bemedev/decompose`
+  dependencies
+- <u>Test coverage **_100%_** on `generate.ts` and `schemas.ts`</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[0.0.1] - 29/03/2026** => _19:55_
 
 </summary>
